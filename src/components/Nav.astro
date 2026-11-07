@@ -1,0 +1,118 @@
+---
+const navItems = [
+	{ href: '#work', en: 'Work', zh: '作品' },
+	{ href: '#about', en: 'About', zh: '关于' },
+	{ href: '#contact', en: 'Contact', zh: '联系' },
+];
+---
+
+<nav class="site-nav" aria-label="Primary">
+	<ul>
+		{
+			navItems.map((item) => (
+				<li>
+					<a href={item.href}>
+						<span lang="en">{item.en}</span>
+						<span lang="zh">{item.zh}</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+	<button id="lang-toggle" class="lang-toggle" type="button" aria-pressed="false" aria-label="Switch language">
+		<span class="lang-option" data-lang-option="en">EN</span>
+		<span class="lang-divider">/</span>
+		<span class="lang-option" data-lang-option="zh">中文</span>
+	</button>
+</nav>
+
+<style>
+	.site-nav {
+		position: fixed;
+		top: clamp(1.25rem, 3vw, 2.25rem);
+		right: clamp(1.25rem, 5vw, 3.5rem);
+		z-index: 50;
+		display: flex;
+		align-items: center;
+		gap: clamp(1.25rem, 2.5vw, 2rem);
+	}
+
+	.site-nav ul {
+		display: flex;
+		gap: clamp(1.1rem, 2vw, 1.75rem);
+	}
+
+	.site-nav a {
+		font-size: 0.8rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--ink-soft);
+		transition: color 0.2s ease;
+	}
+
+	.site-nav a:hover {
+		color: var(--ink);
+	}
+
+	.lang-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.35em;
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-family: var(--font-sans);
+		font-size: 0.8rem;
+		letter-spacing: 0.04em;
+		padding: 0;
+	}
+
+	.lang-divider {
+		color: var(--ink-faint);
+	}
+
+	.lang-option {
+		color: var(--ink-faint);
+		transition: color 0.2s ease;
+	}
+
+	html[data-lang='en'] .lang-toggle [data-lang-option='en'],
+	html[data-lang='zh'] .lang-toggle [data-lang-option='zh'] {
+		color: var(--ink);
+		font-weight: 600;
+	}
+
+	@media (max-width: 640px) {
+		.site-nav {
+			gap: 1rem;
+		}
+
+		.site-nav ul {
+			gap: 0.85rem;
+		}
+
+		.site-nav a {
+			font-size: 0.72rem;
+		}
+	}
+</style>
+
+<script>
+	const root = document.documentElement;
+	const toggle = document.getElementById('lang-toggle');
+	const stored = localStorage.getItem('lang');
+
+	if (stored === 'en' || stored === 'zh') {
+		root.setAttribute('data-lang', stored);
+		toggle?.setAttribute('aria-pressed', String(stored === 'zh'));
+	}
+
+	toggle?.addEventListener('click', () => {
+		const next = root.getAttribute('data-lang') === 'zh' ? 'en' : 'zh';
+		root.setAttribute('data-lang', next);
+		toggle.setAttribute('aria-pressed', String(next === 'zh'));
+		try {
+			localStorage.setItem('lang', next);
+		} catch {}
+	});
+</script>

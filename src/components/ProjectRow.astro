@@ -1,0 +1,101 @@
+---
+import ProjectGallery from './ProjectGallery.astro';
+import type { Project } from '../data/projects';
+
+interface Props {
+	project: Project;
+	index: number;
+}
+
+const { project, index } = Astro.props;
+const reverse = index % 2 === 1;
+---
+
+<article class:list={['project-row', { reverse }]}>
+	<div class="project-media">
+		<ProjectGallery
+			images={project.images}
+			video={project.video}
+			title={project.title}
+			scale={project.mediaScale ?? 1}
+			align={reverse ? 'end' : 'start'}
+		/>
+	</div>
+	<div class="project-info">
+		<p class="eyebrow">{project.year} · {project.category}</p>
+		<h3 class="project-title">{project.title}</h3>
+		<p class="project-desc">{project.description}</p>
+		{project.note && <p class="project-note">{project.note}</p>}
+		{project.url && (
+			<a class="project-link" href={project.url} target="_blank" rel="noopener noreferrer">
+				View project →
+			</a>
+		)}
+	</div>
+</article>
+
+<style>
+	.project-row {
+		display: flex;
+		align-items: flex-start;
+		gap: clamp(2rem, 5vw, 4rem);
+		margin-block: clamp(5rem, 12vw, 10rem);
+	}
+
+	.project-row.reverse {
+		flex-direction: row-reverse;
+	}
+
+	.project-media {
+		flex: 1 1 60%;
+	}
+
+	.project-info {
+		flex: 1 1 32%;
+	}
+
+	.project-title {
+		font-family: var(--font-display);
+		font-weight: 500;
+		font-size: clamp(1.6rem, 3vw, 2.4rem);
+		letter-spacing: -0.01em;
+		margin-top: 0.6rem;
+	}
+
+	.project-desc {
+		color: var(--ink-soft);
+		line-height: 1.6;
+		margin-top: 1rem;
+	}
+
+	.project-note {
+		font-style: italic;
+		color: var(--ink-soft);
+		line-height: 1.6;
+		margin-top: 0.75rem;
+	}
+
+	.project-link {
+		display: inline-block;
+		margin-top: 1.5rem;
+		font-size: 0.8rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--ink);
+		border-bottom: 1px solid var(--hairline);
+		padding-bottom: 0.2rem;
+		transition: border-color 0.2s ease;
+	}
+
+	.project-link:hover {
+		border-color: var(--ink);
+	}
+
+	@media (max-width: 760px) {
+		.project-row,
+		.project-row.reverse {
+			flex-direction: column;
+			align-items: stretch;
+		}
+	}
+</style>

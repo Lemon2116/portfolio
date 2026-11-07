@@ -1,0 +1,205 @@
+---
+import PlaceholderImage from './PlaceholderImage.astro';
+
+interface Props {
+	images?: string[];
+	video?: string;
+	title: string;
+	scale?: number;
+	align?: 'start' | 'end';
+}
+
+const { images = [], video, title, scale = 1, align = 'start' } = Astro.props;
+const hasGallery = images.length > 1;
+const scaleStyle =
+	scale !== 1 ? `max-width: ${scale * 100}%;${align === 'end' ? ' margin-left: auto;' : ''}` : undefined;
+---
+
+{
+	video ? (
+		<div class="project-media-inner">
+			<video src={video} controls playsinline preload="metadata" />
+		</div>
+	) : images.length > 0 ? (
+		<div class="project-gallery" data-gallery style={scaleStyle}>
+			<div class="gallery-viewport">
+				{images.map((src, i) => (
+					<img
+						src={src}
+						alt={`${title} — image ${i + 1} of ${images.length}`}
+						class="gallery-image"
+						data-gallery-image
+						data-index={i}
+						style={i === 0 ? '' : 'display: none;'}
+					/>
+				))}
+				{hasGallery && (
+					<>
+						<button type="button" class="gallery-arrow gallery-arrow-prev" data-gallery-prev aria-label="Previous image">
+							‹
+						</button>
+						<button type="button" class="gallery-arrow gallery-arrow-next" data-gallery-next aria-label="Next image">
+							›
+						</button>
+					</>
+				)}
+			</div>
+			{hasGallery && (
+				<div class="gallery-dots" role="tablist" aria-label={`${title} image selector`}>
+					{images.map((_, i) => (
+						<button
+							type="button"
+							class:list={['gallery-dot', { active: i === 0 }]}
+							data-gallery-dot
+							data-index={i}
+							aria-label={`Show image ${i + 1}`}
+							aria-selected={i === 0}
+						>
+							{i + 1}
+						</button>
+					))}
+				</div>
+			)}
+		</div>
+	) : (
+		<PlaceholderImage label="Replace with project image" />
+	)
+}
+
+<style>
+	.project-media-inner,
+	.project-gallery {
+		width: 100%;
+	}
+
+	video {
+		width: 100%;
+		border-radius: 2px;
+		display: block;
+	}
+
+	.gallery-viewport {
+		position: relative;
+		width: 100%;
+	}
+
+	.gallery-image {
+		width: 100%;
+		border-radius: 2px;
+		cursor: pointer;
+	}
+
+	.gallery-arrow {
+		position: absolute;
+		top: 50%;
+		translate: 0 -50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 999px;
+		border: none;
+		background: rgba(255, 250, 243, 0.85);
+		color: var(--ink);
+		font-size: 1.4rem;
+		line-height: 1;
+		cursor: pointer;
+		transition:
+			background 0.2s ease,
+			opacity 0.2s ease;
+		opacity: 0;
+	}
+
+	.gallery-viewport:hover .gallery-arrow,
+	.gallery-viewport:focus-within .gallery-arrow {
+		opacity: 1;
+	}
+
+	.gallery-arrow:hover {
+		background: #fff;
+	}
+
+	.gallery-arrow-prev {
+		left: 0.75rem;
+	}
+
+	.gallery-arrow-next {
+		right: 0.75rem;
+	}
+
+	.gallery-dots {
+		display: flex;
+		justify-content: center;
+		gap: 0.6rem;
+		margin-top: 0.9rem;
+	}
+
+	.gallery-dot {
+		width: 1.6rem;
+		height: 1.6rem;
+		border-radius: 999px;
+		border: none;
+		background: var(--hairline);
+		color: var(--ink-soft);
+		font-family: var(--font-sans);
+		font-size: 0.7rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition:
+			background 0.2s ease,
+			color 0.2s ease;
+	}
+
+	.gallery-dot:hover {
+		background: rgba(28, 26, 23, 0.2);
+	}
+
+	.gallery-dot.active {
+		background: var(--ink);
+		color: var(--bg);
+	}
+
+	@media (max-width: 760px) {
+		.gallery-arrow {
+			opacity: 1;
+		}
+	}
+</style>
+
+<script>
+	function initGalleries() {
+		document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
+			if (gallery.dataset.galleryInit) return;
+			gallery.dataset.galleryInit = 'true';
+
+			const images = Array.from(gallery.querySelectorAll<HTMLImageElement>('[data-gallery-image]'));
+			const dots = Array.from(gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-dot]'));
+			const prevBtn = gallery.querySelector<HTMLButtonElement>('[data-gallery-prev]');
+			const nextBtn = gallery.querySelector<HTMLButtonElement>('[data-gallery-next]');
+			let current = 0;
+
+			function show(index: number) {
+				const total = images.length;
+				current = (index + total) % total;
+				images.forEach((img, i) => {
+					img.style.display = i === current ? '' : 'none';
+				});
+				dots.forEach((dot, i) => {
+					dot.classList.toggle('active', i === current);
+					dot.setAttribute('aria-selected', String(i === current));
+				});
+			}
+
+			prevBtn?.addEventListener('click', () => show(current - 1));
+			nextBtn?.addEventListener('click', () => show(current + 1));
+			images.forEach((img) => img.addEventListener('click', () => show(current + 1)));
+			dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+		});
+	}
+
+	initGalleries();
+	document.addEventListener('astro:page-load', initGalleries);
+</script>

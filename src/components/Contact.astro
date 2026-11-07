@@ -1,0 +1,79 @@
+---
+const socials = ['LinkedIn', 'GitHub'];
+---
+
+<section id="contact" class="contact">
+	<div class="wrap contact-inner">
+		<h2 class="contact-title">
+			<span lang="en">Let's create something.</span>
+			<span lang="zh">静候佳音。</span>
+		</h2>
+		<a class="contact-email" href="mailto:gymyolanda@gmail.com">gymyolanda@gmail.com</a>
+		<ul class="contact-links">
+			{socials.map((name) => <li><a href="#">{name}</a></li>)}
+		</ul>
+	</div>
+	<footer class="site-footer">
+		<p>&copy; 2026 Yimeng Gu. All rights reserved.</p>
+	</footer>
+</section>
+
+<style>
+	.contact {
+		padding-block: clamp(4rem, 10vw, 8rem) 3rem;
+	}
+
+	.contact-title {
+		font-family: var(--font-display);
+		font-weight: 500;
+		font-size: clamp(2.2rem, 5vw, 3.6rem);
+		letter-spacing: -0.01em;
+		margin-top: 0.75rem;
+		max-width: 20ch;
+	}
+
+	.contact-email {
+		display: inline-block;
+		margin-top: 2rem;
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+		border-bottom: 1px solid var(--hairline);
+		padding-bottom: 0.25rem;
+		transition: border-color 0.2s ease;
+	}
+
+	.contact-email:hover {
+		border-color: var(--ink);
+	}
+
+	.contact-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		margin-top: 3rem;
+	}
+
+	.contact-links a {
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: var(--ink-soft);
+		transition: color 0.2s ease;
+	}
+
+	.contact-links a:hover {
+		color: var(--ink);
+	}
+
+	.site-footer {
+		margin-top: clamp(4rem, 8vw, 6rem);
+		border-top: 1px solid var(--hairline);
+		padding: 1.5rem clamp(1.5rem, 5vw, 4rem);
+	}
+
+	.site-footer p {
+		font-size: 0.8rem;
+		color: var(--ink-faint);
+	}
+</style>

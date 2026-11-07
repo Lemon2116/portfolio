@@ -1,0 +1,107 @@
+---
+const details = [
+	{
+		label: 'Education',
+		value: 'MEng Computer Graphics and Game Technology (CGGT), University of Pennsylvania, Expected graduation: Dec 2027\n Bachelor of Science, Cognitive Studies and Computer Science, Vanderbilt University, May 2026',
+	},
+	{
+		label: 'Technical Background',
+		value: 'Real-time rendering, shader programming, graphics pipelines, tools development',
+	},
+	{
+		label: 'Creative Interests',
+		value: 'Lighting design, atmosphere, spatial storytelling, interactive installations',
+	},
+	{
+		label: 'Tools & Technologies',
+		value: 'Unreal Engine, Unity, GLSL, Python, C++, Maya, Blender',
+	},
+];
+---
+
+<section id="about" class="about">
+	<div class="wrap about-grid">
+		<div class="about-head">
+			<h2 class="section-title">
+				<span lang="en">About Me</span>
+				<span lang="zh">关于我</span>
+			</h2>
+		</div>
+		<div class="about-body">
+			<dl class="about-details">
+				{
+					details.map((item) => (
+						<div class="about-item">
+							<dt>{item.label}</dt>
+							<dd>{item.value}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</div>
+</section>
+
+<style>
+	.about {
+		padding-block: clamp(4rem, 10vw, 8rem);
+	}
+
+	.about-grid {
+		display: grid;
+		grid-template-columns: 0.8fr 1.6fr;
+		gap: clamp(2rem, 6vw, 5rem);
+	}
+
+	.about-head {
+		align-self: start;
+		position: sticky;
+		top: 8rem;
+	}
+
+	.about-intro {
+		font-size: 1.1rem;
+		line-height: 1.7;
+		color: var(--ink-soft);
+		max-width: 56ch;
+	}
+
+	.about-details {
+		margin-top: 2.5rem;
+	}
+
+	.about-item {
+		display: grid;
+		grid-template-columns: 0.4fr 1fr;
+		gap: 1.5rem;
+		padding-block: 1.25rem;
+		border-top: 1px solid var(--hairline);
+	}
+
+	.about-item dt {
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--ink-faint);
+	}
+
+	.about-item dd {
+		color: var(--ink-soft);
+		line-height: 1.6;
+	}
+
+	@media (max-width: 760px) {
+		.about-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.about-head {
+			position: static;
+		}
+
+		.about-item {
+			grid-template-columns: 1fr;
+			gap: 0.4rem;
+		}
+	}
+</style>

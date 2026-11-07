@@ -1,0 +1,24 @@
+---
+import ProjectRow from './ProjectRow.astro';
+import { projects } from '../data/projects';
+---
+
+<section id="work" class="work">
+	<div class="wrap">
+		<header class="section-head">
+			<h2 class="section-title">
+				<span lang="en">Selected Work</span>
+				<span lang="zh">精选作品</span>
+			</h2>
+		</header>
+		<div class="project-list">
+			{projects.map((project, index) => <ProjectRow project={project} index={index} />)}
+		</div>
+	</div>
+</section>
+
+<style>
+	.work {
+		padding-block: clamp(4rem, 10vw, 8rem) 2rem;
+	}
+</style>
