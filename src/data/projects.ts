@@ -51,9 +51,9 @@ export const projects: Project[] = [
 		description:
 			'A Maya environment study inspired by Zhang Dai’s classical Chinese essay of the same name, built around a hero lakeside pavilion and staged across a far shot of mountain and water and a near shot of the tea set waiting inside.',
 		images: [
-			'/media/images/project3_pavilion.jpg',
 			'/media/images/project3_far.jpg',
 			'/media/images/project3_near.jpg',
+			'/media/images/project3_pavilion.jpg',
 		],
 		// Source renders are 16:9; crop to project one's 4:3 so the displayed
 		// height matches instead of looking shorter than the other galleries.
