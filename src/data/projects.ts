@@ -8,6 +8,8 @@ export interface Project {
 	images?: string[];
 	video?: string;
 	mediaScale?: number;
+	aspectRatio?: string;
+	objectPosition?: string;
 }
 
 // Replace these placeholders with your own projects. Add or remove entries freely —
@@ -43,11 +45,19 @@ export const projects: Project[] = [
 		mediaScale: 0.75,
 	},
 	{
-		title: '2D Scene Graph and Hierarchical Character Rig',
-		year: '2026.09',
-		category: 'Scene Graph',
+		title: 'Viewing Snow from the Mid-Lake Pavilion (湖心亭看雪)',
+		year: '2026.11',
+		category: 'Modeling & Lighting',
 		description:
-			'Built a 2D scene graph in C++/Qt/OpenGL whose translate, rotate, and scale nodes are composed by recursive traversal into 3×3 world matrices, and used it to rig a bird character with hinged two-segment legs and wings. Added a Qt tree-view editor for posing joints live, which shows only the controls for the selected node’s type and lets users add new transform nodes at runtime.',
-		video: '/media/videos/project3.mp4',
+			'A Maya environment study inspired by Zhang Dai’s classical Chinese essay of the same name, built around a hero lakeside pavilion and staged across a far shot of mountain and water and a near shot of the tea set waiting inside.',
+		images: [
+			'/media/images/project3_pavilion.jpg',
+			'/media/images/project3_far.jpg',
+			'/media/images/project3_near.jpg',
+		],
+		// Source renders are 16:9; crop to project one's 4:3 so the displayed
+		// height matches instead of looking shorter than the other galleries.
+		aspectRatio: '4 / 3',
+		objectPosition: '65% center',
 	},
 ];

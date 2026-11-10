@@ -7,12 +7,24 @@ interface Props {
 	title: string;
 	scale?: number;
 	align?: 'start' | 'end';
+	aspectRatio?: string;
+	objectPosition?: string;
 }
 
-const { images = [], video, title, scale = 1, align = 'start' } = Astro.props;
+const {
+	images = [],
+	video,
+	title,
+	scale = 1,
+	align = 'start',
+	aspectRatio,
+	objectPosition = 'center',
+} = Astro.props;
 const hasGallery = images.length > 1;
 const scaleStyle =
 	scale !== 1 ? `max-width: ${scale * 100}%;${align === 'end' ? ' margin-left: auto;' : ''}` : undefined;
+const viewportStyle = aspectRatio ? `aspect-ratio: ${aspectRatio};` : undefined;
+const imageStyle = aspectRatio ? `height: 100%; object-fit: cover; object-position: ${objectPosition};` : '';
 ---
 
 {
@@ -22,7 +34,7 @@ const scaleStyle =
 		</div>
 	) : images.length > 0 ? (
 		<div class="project-gallery" data-gallery style={scaleStyle}>
-			<div class="gallery-viewport">
+			<div class="gallery-viewport" style={viewportStyle}>
 				{images.map((src, i) => (
 					<img
 						src={src}
@@ -30,7 +42,7 @@ const scaleStyle =
 						class="gallery-image"
 						data-gallery-image
 						data-index={i}
-						style={i === 0 ? '' : 'display: none;'}
+						style={`${imageStyle}${i === 0 ? '' : ' display: none;'}`}
 					/>
 				))}
 				{hasGallery && (

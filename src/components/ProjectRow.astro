@@ -19,6 +19,8 @@ const reverse = index % 2 === 1;
 			title={project.title}
 			scale={project.mediaScale ?? 1}
 			align={reverse ? 'end' : 'start'}
+			aspectRatio={project.aspectRatio}
+			objectPosition={project.objectPosition}
 		/>
 	</div>
 	<div class="project-info">
